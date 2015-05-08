@@ -51,10 +51,10 @@ def add_category(request):
     return render_to_response('rango/add_category.html', {'form': form}, RequestContext(request))
 
 
-'''
+
 def add_page(request, category_name_url):
     context = RequestContext(request)
-    category_name = decode_url(category_name_url)
+    category_name = encode(category_name_url)
     if request.method == 'POST':
         form = PageForm(request.POST)
         if form.is_valid():
@@ -76,4 +76,3 @@ def add_page(request, category_name_url):
             {'category_name_url': category_name_url,
              'category_name': category_name, 'form': form},
              context)
-             '''
