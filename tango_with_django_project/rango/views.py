@@ -17,8 +17,8 @@ def index(request):
     pages_list = Page.objects.order_by('-views')[:5]
     context_dict = {'categories': category_list,'pages':pages_list}
     for category in category_list:
-        category.url = category.name.replace(' ', '_')
-        #category.url =  decode(category.name)
+        #category.url = category.name.replace(' ', '_')
+        category.url =  decode(category.name)
     return render_to_response('rango/index.html', context_dict, RequestContext(request))
 
 def about(request):
@@ -26,8 +26,8 @@ def about(request):
     return render_to_response('rango/about.html', context_dict, RequestContext(request))
 
 def category(request, category_name_url):
-    category_name = category_name_url.replace('_', ' ')
-    #category_name = encode(category_name_url)
+    #category_name = category_name_url.replace('_', ' ')
+    category_name = encode(category_name_url)
     context_dict = {'category_name': category_name}
     try:
         category = Category.objects.get(name=category_name)
@@ -36,7 +36,7 @@ def category(request, category_name_url):
         context_dict['category'] = category
     except Category.DoesNotExist:
         pass
-    return render_to_response('rango/category.html', context_dict, RequestContext(request))
+    return render_to_response('rango/category_backup.html', context_dict, RequestContext(request))
 
 def add_category(request):
     if request.method == 'POST':
