@@ -36,7 +36,7 @@ def category(request, category_name_url):
         context_dict['category'] = category
     except Category.DoesNotExist:
         pass
-    return render_to_response('rango/category_backup.html', context_dict, RequestContext(request))
+    return render_to_response('rango/category.html', context_dict, RequestContext(request))
 
 def add_category(request):
     if request.method == 'POST':
