@@ -1,27 +1,24 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Rango</title>
-    </head>
+{% extends 'rango/base.html' %}
+{% load static %}
 
-    <body>
-        <h1>Add a Category</h1>
+{% block title %}Rango{% endblock %}
 
-        <form id="category_form" method="post" action="/rango/add_category/">
+{% block body_block %}
+   <h1>Add a Category</h1>
 
-            {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
+    <form id="category_form" method="post" action="/rango/add_category/">
 
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-            {% endfor %}
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
 
-            <input type="submit" name="submit" value="Create Category" />
-        </form>
-    </body>
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+            {{ field }}
+        {% endfor %}
 
-</html>
+        <input type="submit" name="submit" value="Create Category" />
+    </form>
+{% endblock %}
