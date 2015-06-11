@@ -32,6 +32,7 @@ def category(request, category_name_url):
     #category_name = category_name_url.replace('_', ' ')
     category_name = encode(category_name_url)
     context_dict = {'category_name': category_name}
+    context_dict['category_name_url'] = category_name_url
     try:
         category = Category.objects.get(name=category_name)
         pages = Page.objects.filter(category=category)
@@ -136,3 +137,8 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/rango/')
+
+
+def apolish(request):
+    context_dict = {}
+    return render_to_response('rango/apolish.html', context_dict, RequestContext(request))
