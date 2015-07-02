@@ -26,6 +26,7 @@
                          {% if user.is_authenticated %}
                             <li class="navbar-text">Welcome, {{ user.username }}!</li>
                             <li><a href="/rango/logout/">Logout</a></li>
+                            <li><a href="/rango/profile/">profile</a></li>
                          {% else %}
                             <li><a href="/rango/register/">Register</a></li>
                             <li><a href="/rango/login/">Login</a></li>
@@ -45,26 +46,27 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span3">
-                    <div class="well sidebar-nav">
-                        <!--- Empty for the timebeing -->
+                    {% include "rango/category_list.html" %}
+                    <div>
+                        <form action="http://www.baidu.com/baidu" target="_blank">
+                        <div align="center">
+                        <input type=text name=word size=30><button type="submit">百度一下</button>
+                        </div>
+                        </form>
                     </div>
-                    <!--/.well -->
                 </div>
-                <!--/span-->
                 <div class="span9">
                     {% block body_block %}
                     {% endblock %}
                 </div>
-                <!--/span-->
             </div>
-            <!--/row-->
         </div>
-        <!--/.fluid-container-->
 
         <hr>
 
+        $(document).ready(function(){
 
-
+        )}
         <script src="{% static 'jquary/jquery.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </body>

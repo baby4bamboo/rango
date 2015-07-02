@@ -1,7 +1,7 @@
 from django.http import HttpResponse ,HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from rango.models import Category,Page
+from rango.models import Category,Page,UserProfile
 from rango.forms import CategoryForm,PageForm,User,UserProfile,UserForm,UserProfileForm
 from django.contrib.auth import authenticate, login ,logout
 from django.contrib.auth.decorators import login_required
@@ -11,9 +11,16 @@ def encode(with_blanke):
     no_blanke=with_blanke.replace('_', ' ')
     return no_blanke
 
-def decode(no_blanke):
+def encode_url(no_blanke):
     with_blanke=no_blanke.replace(' ','_')
     return with_blanke
+
+def get_category_list():
+    category_list = Category.objects.all()
+    for category in category_list:
+        category.url =  encode_url(category.name)
+    return category_list
+
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -21,7 +28,7 @@ def index(request):
     context_dict = {'categories': category_list,'pages':pages_list}
     for category in category_list:
         #category.url = category.name.replace(' ', '_')
-        category.url =  decode(category.name)
+        category.url =  encode_url(category.name)
     return render_to_response('rango/index.html', context_dict, RequestContext(request))
 
 def about(request):
@@ -40,6 +47,7 @@ def category(request, category_name_url):
         context_dict['category'] = category
     except Category.DoesNotExist:
         pass
+    context_dict['categories']=get_category_list()
     return render_to_response('rango/category.html', context_dict, RequestContext(request))
 
 def add_category(request):
@@ -142,3 +150,16 @@ def user_logout(request):
 def apolish(request):
     context_dict = {}
     return render_to_response('rango/apolish.html', context_dict, RequestContext(request))
+
+@login_required
+def profile(request):
+    cat_list = get_category_list()
+    context_dict = {'cat_list': cat_list}
+    u = User.objects.get(username=request.user)
+    try:
+        up = UserProfile.objects.get(user=u)
+    except:
+        up = None
+    context_dict['user'] = u
+    context_dict['userprofile'] = up
+    return render_to_response('rango/profile.html', context_dict, RequestContext(request))
