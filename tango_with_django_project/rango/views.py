@@ -40,6 +40,7 @@ def category(request, category_name_url):
     category_name = encode(category_name_url)
     context_dict = {'category_name': category_name}
     context_dict['category_name_url'] = category_name_url
+    #context_dict['likes']=Category.objects.
     try:
         category = Category.objects.get(name=category_name)
         pages = Page.objects.filter(category=category)
@@ -163,3 +164,18 @@ def profile(request):
     context_dict['user'] = u
     context_dict['userprofile'] = up
     return render_to_response('rango/profile.html', context_dict, RequestContext(request))
+
+@login_required
+def like_category(request):
+    context = RequestContext(request)
+    cat_id = None
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+    likes = 0
+    if cat_id:
+        category = Category.objects.get(id=int(cat_id))
+        if category:
+            likes = category.likes+1
+            category.likes = likes
+            category.save()
+    return HttpResponse(likes)
